@@ -21,8 +21,7 @@ export default async function sendLoginRequest( hashPassword : string ) : Promis
     if (rawResponse.status === 200) {
         const userInfo = rawResponse.data.user;
         const token = rawResponse.data.token;
-    
-        toast.success("Bem vindo " + userInfo.Name.split(' ')[0] + "!");
+
         return {
             user: {
                 UserId: userInfo.UserId,
