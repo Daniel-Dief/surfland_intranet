@@ -5,6 +5,7 @@ import UserDTO from '../dto/userDTO'
 
 interface State extends UserDTO {
     setUser: (newState: UserDTO) => void;
+    clearUser: () => void;
 }
 
 const useUser = create<State>()(
@@ -20,11 +21,23 @@ const useUser = create<State>()(
       updatedBy: undefined,
       setUser: (newState: UserDTO) => {
         set(newState);
+      },
+      clearUser: () => {
+        set({
+          userId: undefined,
+          name: undefined,
+          login: undefined,
+          accessProfileId: undefined,
+          statusId: undefined,
+          personId: undefined,
+          updatedAt: undefined,
+          updatedBy: undefined,
+        });
       }
     }),
     {
-      name: 'user-storage', // nome único para o armazenamento
-      storage: createJSONStorage(() => localStorage),
+      name: 'user-storage',
+      storage: createJSONStorage(() => sessionStorage),
       partialize: (state) => {
         return state;
       },
