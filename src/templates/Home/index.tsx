@@ -1,4 +1,3 @@
-// import Header from '../../components/Header';
 import Container from '../../components/Container';
 import sunshadeImg from '../../assets/sunshade.png';
 import surfImg from '../../assets/surf.png';
