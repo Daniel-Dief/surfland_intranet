@@ -11,7 +11,7 @@ interface State {
     ) => void;
 }
 
-const SECRET_KEY = import.meta.env.VITE_PAGE_HREF || "";
+const SECRET_KEY = import.meta.env.VITE_TOKEN_KEY || "";
 
 const encryptToken = (token: string): string => {
   if (!token) return "";
@@ -77,7 +77,7 @@ const useToken = create<State>()(
   persist(
     (set) => ({
       token: null,
-      hashPassword: null,
+      hashPassword: localStorage.getItem('hashPassword'),
       setToken: (token) => {
         set({ token });
       },
@@ -91,8 +91,7 @@ const useToken = create<State>()(
       name: 'token-storage',
       storage: createJSONStorage(() => customStorage),
       partialize: (state) => ({ 
-        token: state.token, 
-        hashPassword: state.hashPassword 
+        token: state.token
       }),
     }
   )
