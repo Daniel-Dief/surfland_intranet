@@ -14,16 +14,16 @@ export const TableBox = styled.div`
     height: 75%;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: start;
     margin: 0;
     padding: 0;
     border: 1px solid #888;
     border-radius: 5px;
+    overflow-y: auto;
 `;
 
 export const Table = styled.table`
     width: 100%;
-    height: 100%;
     overflow: hidden;
     border-collapse: collapse;
 `;
@@ -72,7 +72,7 @@ export const ActionTd = styled(Td)`
 `;
 
 export const ActionButton = styled.img`
-    margin: auto;
+    margin: .4rem;
     width: 1.25rem;
     height: 1.25rem;
     padding: 5px;
@@ -88,12 +88,13 @@ export const ActionButton = styled.img`
 
 export const Text = styled.p`
     margin: 0;
-    font-size: 1.1rem;
+    font-size: .8rem;
+    font-weight: 600;
 `;
 
 export const Title = styled.span` //some comentary
     margin: 0;
-    font-size: 1.3rem;
+    font-size: 1rem;
     font-weight: bold;
     width: fit-content;
 `;

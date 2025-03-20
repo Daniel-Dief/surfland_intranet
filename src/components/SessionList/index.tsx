@@ -1,31 +1,57 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { SmallIcon } from '../../common/styles/images';
 import { Container, TableBox, Table, Thead, Tbody, Tr, Td, ActionTd, ActionButton, Title, Text, Navbox, NavButton } from './style';
 
 import { useMySessions } from '../../hooks/useMySessions';
 
-import trashImg from "../../assets/trash.png";
+import { formatDateDDMMYYYY, formatTimeHHMM, formatDateTimeComplete } from '../../common/utils/formatDateTime';
+
+import trashImg from "../../assets/trash.png"
 import previusImg from "../../assets/previus.png";
 import nextImg from "../../assets/next.png";
-import requestMyWaves from '../../services/waves/myWaves.service';
+import { toast } from 'react-toastify';
+
+interface TicketsProps {
+    TicketId: string,
+    Wave: string,
+    WaveDate: string,
+    WaveTime: string,
+    CreatedAt: string,
+    Status: string,
+}
 
 export default function SessionList() {
     const [page, setPage] = useState<number>(1);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [totalPages, setTotalPages] = useState<number>(0);
+    const [myTickets, setMyTickets] = useState<TicketsProps[]>([]);
 
-    requestMyWaves();
+    useEffect(() => {
+        const fetchData = async () => {
+          try {
+            setLoading(true);
+            const data = await useMySessions(page);
+            setTotalPages(data.totalPages);
+            setMyTickets(data.tickets);
+          } finally {
+            setLoading(false);
+          }
+        };
+    
+        fetchData();
+      }, []);
 
     function handlePrevius() {
         if (page > 1) { setPage(page - 1) };
     }
 
     function handleNext() {
-        //responseJson.totalPages > page
-        if (true) { setPage(page + 1) };
+        if (totalPages > page) { setPage(page + 1) };
     }
 
     function handleDelete(id: number) {
-        console.log('Delete: ' + id)
+        toast.error('Delete: ' + id)
     }
 
     return (
@@ -44,6 +70,37 @@ export default function SessionList() {
                         </Tr>
                     </Thead>
                     <Tbody>
+                        {myTickets.map(ticket => (
+                            <Tr key={ticket.TicketId}>
+                                <Td><Text>{ticket.TicketId}</Text></Td>
+                                <Td><Text>{ticket.Wave}</Text></Td>
+                                <Td><Text>{
+                                    formatDateDDMMYYYY(
+                                        new Date(ticket.WaveDate)
+                                    )
+                                }</Text></Td>
+                                <Td><Text>{
+                                    formatTimeHHMM(
+                                        new Date(ticket.WaveTime)
+                                    )
+                                }</Text></Td>
+                                <Td><Text>{
+                                    formatDateTimeComplete(
+                                        new Date(ticket.CreatedAt)
+                                    )
+                                }</Text></Td>
+                                <Td><Text>{ticket.Status}</Text></Td>
+                                <ActionTd>
+                                    <ActionButton
+                                        onClick={() => {
+                                        handleDelete(
+                                            Number(ticket.TicketId)
+                                        )}}
+                                        src={trashImg}
+                                    />
+                                </ActionTd>
+                            </Tr>
+                        ))}
                     </Tbody>
                 </Table>
             </TableBox>
