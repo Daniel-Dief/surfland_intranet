@@ -1,4 +1,4 @@
-import requestMyWaves from '../services/waves/myWaves.service';
+import requestMyWaves from '../services/tickets/myTickets.service';
 
 export async function useMySessions(page : number) {
     const myTickets = await requestMyWaves();
@@ -8,7 +8,7 @@ export async function useMySessions(page : number) {
 
     return {
         "status": 200,
-        "data": myTickets.slice(iniIndex, endIndex),
-        "totalPages": Math.ceil(10 / 10)
+        "tickets": myTickets.tickets.slice(iniIndex, endIndex),
+        "totalPages": myTickets.totalPages
     }
 };
