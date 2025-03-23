@@ -40,4 +40,9 @@ export const CalendarWrapper = styled.div`
     .rdp-day {
         padding: .3rem .5rem;
     }
+
+    .rdp-day_button:disabled {
+        color: #FF0000;
+        cursor: not-allowed;
+    }
 `;

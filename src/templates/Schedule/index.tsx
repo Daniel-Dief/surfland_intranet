@@ -1,15 +1,29 @@
-import { useState, FormEvent, useRef } from "react";
+import { useState, FormEvent, useRef, useEffect } from "react";
 
 import Header from "../../components/Header";
 import { Container, Form, Confirm } from "./style";
 import Select from "../../components/Select";
 
 import SheduleCalendar from "../../components/SheduleCalendar";
+import requestAvailabilityDates, { responseProps as responsePropsDates } from "../../services/availability/availabilityDates.service";
+import requestAvailabilityWaves, { responseProps as responsePropsWaves } from "../../services/availability/availabilityWaves.service";
+import requestAvailabilitySchedules from "../../services/availability/availabilitySchedules.service";
 
 export default function Schedule() {
     const [ selectedDate, setSelectedDate ] = useState<Date | undefined>(undefined);
-    const waveRef = useRef<HTMLSelectElement>(null);
+    const [ waves, setWaves ] = useState<responsePropsWaves[] | null>(null);
+    const [ schedules, setSchedules ] = useState<string[]>([]);
+    const [ dates, setDates ] = useState<responsePropsDates[]>([]);
+
     const hourRef = useRef<HTMLSelectElement>(null);
+    const waveRef = useRef<HTMLSelectElement>(null);
+
+    useEffect(() => {
+        if(waves === null) {
+            requestAvailabilityWaves()
+                .then(setWaves)
+        }
+    }, [])
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
@@ -20,33 +34,62 @@ export default function Schedule() {
         })
     }
 
+    function handleSchedulesReload() {
+        const waveId = waveRef.current?.value;
+
+        if(!waveId) return;
+
+        setSchedules([]);
+        setDates([]);
+        setSelectedDate(undefined);
+        requestAvailabilitySchedules(Number(waveId))
+            .then(setSchedules)
+    }
+
+    function handleDatesReload() {
+        const waveId = waveRef.current?.value;
+        const schedule = hourRef.current?.value;
+
+        if(!waveId || !schedule) return;
+
+        requestAvailabilityDates(Number(waveId), schedule)
+            .then(setDates)
+    }
+
     return(
         <>
             <Header />
             <Container>
                 <Form onSubmit={ handleSubmit }>
                     <Select
+                        title="Selecione uma sessão"
+                        onChange={ handleSchedulesReload }
                         selectRef={ waveRef }
-                        options={[
-                            { label: "Wave 1", value: "1" },
-                            { label: "Wave 2", value: "2" },
-                            { label: "Wave 3", value: "3" }
-                        ]}
+                        options={
+                            waves === null ? [] :
+                            waves.map(wave => ({
+                                label: wave.Name,
+                                value: wave.WaveId.toString()
+                            }))
+                        }
                     />
                     <Select
+                        title="Selecione um horário"
+                        onChange={ handleDatesReload }
                         selectRef={ hourRef }
-                        options={[
-                            { label: "08:00", value: "08:00" },
-                            { label: "09:00", value: "09:00" },
-                            { label: "10:00", value: "10:00" }
-                        ]}
+                        options={schedules.map(schedule => ({
+                            label: schedule,
+                            value: schedule
+                        }))}
                     />
                     <Confirm>
                         Agendar
                     </Confirm>
                 </Form>
                 <SheduleCalendar
+                    selectedDate={ selectedDate }
                     setSelectedDate={ setSelectedDate }
+                    availableDates={ dates.map(date => new Date(date.WaveDate)) }
                 />
             </Container>
         </>
