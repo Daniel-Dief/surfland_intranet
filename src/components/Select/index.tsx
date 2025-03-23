@@ -7,15 +7,19 @@ interface Options {
 }
 
 interface Props {
-    selectRef: RefObject<HTMLSelectElement>;
+    selectRef: RefObject<HTMLSelectElement | null>;
     options: Array<Options>;
+    onChange?: () => void;
+    title?: string;
 }
 
-export default function Select({ selectRef, options } : Props ) {
+export default function Select({ selectRef, options, onChange, title } : Props ) {
     return (
         <SelectBox
+            onChange={ onChange ?? (() => {}) }
             ref={ selectRef }
         >
+            <option selected>{ title }</option>
             {options.map((option, index) => (
                 <option key={index} value={option.value}>
                     {option.label}
