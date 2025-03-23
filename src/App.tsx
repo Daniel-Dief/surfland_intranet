@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import Home from './templates/Home'
 import MySessions from './templates/MySessions'
+import Schedule from './templates/Schedule'
 import ModalCase from './components/ModalCase'
 import useToken from './store/useToken'
 import sendLoginRequest from './services/auth/logIn.service'
@@ -35,6 +36,7 @@ export default function App() {
       <Routes>
         <Route path="*" element={<Home />} />
         <Route path="/MySessions" element={<MySessions />} />
+        <Route path="/Schedule" element={<Schedule />} />
       </Routes>
       <ModalCase />
     </Router>
