@@ -25,17 +25,23 @@ export const Form = styled.form`
 
 export const Select = styled.select``;
 
-export const Confirm = styled.button`
+interface ConfirmProps {
+    disabled: boolean;
+}
+
+export const Confirm = styled.button<ConfirmProps>`
+    color: ${props => props.disabled ? 'rgb(0, 0, 0, 0.5)' : 'black'};
+    cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
+
     border: none;
-    background-color: rgb(0, 0, 0, 0.1);
+    background-color: ${props => props.disabled ? 'rgb(0, 0, 0, 0.2)' : '#FFCF00'};
     font-size: 1.2rem;
     font-weight: bold;
     border-radius: 5px;
     padding: .75rem 2rem;
-    cursor: pointer;
     transition: background-color 0.2s;
 
     &:hover {
-        background-color: rgb(0, 0, 0, 0.2);
+        background-color: ${props => props.disabled ? 'rgb(0, 0, 0, 0.2)' : 'rgb(255, 207, 0, 0.5)'};
     }
 `;

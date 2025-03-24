@@ -14,6 +14,7 @@ export default function Schedule() {
     const [ waves, setWaves ] = useState<responsePropsWaves[] | null>(null);
     const [ schedules, setSchedules ] = useState<string[]>([]);
     const [ dates, setDates ] = useState<responsePropsDates[]>([]);
+    const [ formOk, setFormOk ] = useState<boolean>(false);
 
     const hourRef = useRef<HTMLSelectElement>(null);
     const waveRef = useRef<HTMLSelectElement>(null);
@@ -23,7 +24,8 @@ export default function Schedule() {
             requestAvailabilityWaves()
                 .then(setWaves)
         }
-    }, [])
+        handleChange();
+    }, [selectedDate])
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
@@ -56,11 +58,25 @@ export default function Schedule() {
             .then(setDates)
     }
 
+    function handleChange() {
+        if(
+            waveRef.current?.value &&
+            waveRef.current?.value != "Selecione uma sessão" &&
+            hourRef.current?.value &&
+            hourRef.current?.value != "Selecione um horário" &&
+            selectedDate
+        ) {
+            setFormOk(true);
+        } else {
+            setFormOk(false);
+        }
+    }
+
     return(
         <>
             <Header />
             <Container>
-                <Form onSubmit={ handleSubmit }>
+                <Form onSubmit={ handleSubmit } onChange={ handleChange }>
                     <Select
                         title="Selecione uma sessão"
                         onChange={ handleSchedulesReload }
@@ -82,7 +98,9 @@ export default function Schedule() {
                             value: schedule
                         }))}
                     />
-                    <Confirm>
+                    <Confirm
+                        disabled={ !formOk }
+                    >
                         Agendar
                     </Confirm>
                 </Form>
