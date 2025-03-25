@@ -4,6 +4,7 @@ import { SmallIcon } from '../../common/styles/images';
 import { Container, TableBox, Table, Thead, Tbody, Tr, Td, ActionTd, ActionButton, Title, Text, Navbox, NavButton } from './style';
 
 import { useMySessions } from '../../hooks/useMySessions';
+import requestCancelTicket from "../../services/tickets/cancelTicket.service";
 
 import { formatDateDDMMYYYY, formatTimeHHMM, formatDateTimeComplete } from '../../common/utils/formatDateTime';
 
@@ -26,6 +27,7 @@ export default function SessionList() {
     const [loading, setLoading] = useState<boolean>(false);
     const [totalPages, setTotalPages] = useState<number>(0);
     const [myTickets, setMyTickets] = useState<TicketsProps[]>([]);
+    const [reload, setReload] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -40,7 +42,7 @@ export default function SessionList() {
         };
     
         fetchData();
-      }, []);
+      }, [reload]);
 
     function handlePrevius() {
         if (page > 1) { setPage(page - 1) };
@@ -50,8 +52,12 @@ export default function SessionList() {
         if (totalPages > page) { setPage(page + 1) };
     }
 
-    function handleDelete(id: number) {
-        toast.error('Delete: ' + id)
+    async function handleDelete(ticketId: number) {
+        const response = await requestCancelTicket(ticketId)
+
+        toast.warn(response.message + " " + response.ticketId);
+
+        setReload(!reload);
     }
 
     return (
@@ -93,9 +99,11 @@ export default function SessionList() {
                                 <ActionTd>
                                     <ActionButton
                                         onClick={() => {
-                                        handleDelete(
-                                            Number(ticket.TicketId)
-                                        )}}
+                                            if(ticket.Status == "Ativo") {
+                                                handleDelete(
+                                                    Number(ticket.TicketId)
+                                                )
+                                            }}}
                                         src={trashImg}
                                     />
                                 </ActionTd>
