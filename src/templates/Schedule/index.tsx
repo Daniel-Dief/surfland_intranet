@@ -9,6 +9,9 @@ import requestAvailabilityDates, { responseProps as responsePropsDates } from ".
 import requestAvailabilityWaves, { responseProps as responsePropsWaves } from "../../services/availability/availabilityWaves.service";
 import requestAvailabilitySchedules from "../../services/availability/availabilitySchedules.service";
 
+import requestScheduleSession from "../../services/availability/scheduleSession.service";
+import { toast } from "react-toastify";
+
 export default function Schedule() {
     const [ selectedDate, setSelectedDate ] = useState<Date | undefined>(undefined);
     const [ waves, setWaves ] = useState<responsePropsWaves[] | null>(null);
@@ -27,13 +30,26 @@ export default function Schedule() {
         handleChange();
     }, [selectedDate])
 
-    function handleSubmit(e: FormEvent) {
+    async function handleSubmit(e: FormEvent) {
         e.preventDefault();
-        console.log({
-            wave: waveRef.current?.value,
-            hour: hourRef.current?.value,
-            date: selectedDate?.toISOString()
-        })
+
+        const waveId = Number(waveRef.current?.value);
+        const waveTime = hourRef.current?.value;
+        const waveDate = selectedDate?.toISOString()
+
+        if(!waveId || !waveTime || !waveDate) return;
+
+        const response = await requestScheduleSession(
+            waveId,  
+            waveTime,
+            waveDate
+        );
+
+        if(!response.ticketId) {
+            toast.error(response.message);
+        } else {
+            toast.success(response.message + " - Ticket: " + response.ticketId);
+        }
     }
 
     function handleSchedulesReload() {
