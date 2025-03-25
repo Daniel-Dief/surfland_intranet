@@ -13,9 +13,9 @@ function padZero(num: number): string {
  * @returns String no formato dd/mm/aaaa
  */
 function formatDateDDMMYYYY(date: Date): string {
-  const day = padZero(date.getDate());
-  const month = padZero(date.getMonth() + 1); // getMonth() retorna 0-11
-  const year = date.getFullYear();
+  const day = padZero(date.getUTCDate());
+  const month = padZero(date.getUTCMonth() + 1); // getUTCMonth() retorna 0-11
+  const year = date.getUTCFullYear();
 
   return `${day}/${month}/${year}`;
 }
@@ -26,8 +26,8 @@ function formatDateDDMMYYYY(date: Date): string {
  * @returns String no formato dd/mm
  */
 function formatDateDDMM(date: Date): string {
-  const day = padZero(date.getDate());
-  const month = padZero(date.getMonth() + 1);
+  const day = padZero(date.getUTCDate());
+  const month = padZero(date.getUTCMonth() + 1);
 
   return `${day}/${month}`;
 }
@@ -38,9 +38,9 @@ function formatDateDDMM(date: Date): string {
  * @returns String no formato hh:mm:ss
  */
 function formatTimeHHMMSS(date: Date): string {
-  const hours = padZero(date.getHours());
-  const minutes = padZero(date.getMinutes());
-  const seconds = padZero(date.getSeconds());
+  const hours = padZero(date.getUTCHours());
+  const minutes = padZero(date.getUTCMinutes());
+  const seconds = padZero(date.getUTCSeconds());
 
   return `${hours}:${minutes}:${seconds}`;
 }
@@ -51,8 +51,8 @@ function formatTimeHHMMSS(date: Date): string {
  * @returns String no formato hh:mm
  */
 function formatTimeHHMM(date: Date): string {
-  const hours = padZero(date.getHours());
-  const minutes = padZero(date.getMinutes());
+  const hours = padZero(date.getUTCHours());
+  const minutes = padZero(date.getUTCMinutes());
 
   return `${hours}:${minutes}`;
 }
@@ -72,9 +72,9 @@ function formatDateTimeComplete(date: Date): string {
  * @returns String no formato aaaa-mm-dd
  */
 function formatDateISO(date: Date): string {
-  const day = padZero(date.getDate());
-  const month = padZero(date.getMonth() + 1);
-  const year = date.getFullYear();
+  const day = padZero(date.getUTCDate());
+  const month = padZero(date.getUTCMonth() + 1);
+  const year = date.getUTCFullYear();
 
   return `${year}-${month}-${day}`;
 }
@@ -85,13 +85,13 @@ function formatDateISO(date: Date): string {
  * @returns String no formato "1 de janeiro de 2025"
  */
 function formatDateLong(date: Date): string {
-  const day = date.getDate();
+  const day = date.getUTCDate();
   const monthNames = [
   'janeiro', 'fevereiro', 'março', 'abril', 'maio', 'junho',
   'julho', 'agosto', 'setembro', 'outubro', 'novembro', 'dezembro'
   ];
-  const month = monthNames[date.getMonth()];
-  const year = date.getFullYear();
+  const month = monthNames[date.getUTCMonth()];
+  const year = date.getUTCFullYear();
 
   return `${day} de ${month} de ${year}`;
 }
@@ -103,8 +103,8 @@ function formatDateLong(date: Date): string {
  */
 function formatRelativeDate(date: Date): string {
   const now = new Date();
-  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-  const dateWithoutTime = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  const today = new Date(now.getFullYear(), now.getUTCMonth(), now.getUTCDate());
+  const dateWithoutTime = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
 
   const diffTime = today.getTime() - dateWithoutTime.getTime();
   const diffDays = Math.round(diffTime / (1000 * 60 * 60 * 24));
