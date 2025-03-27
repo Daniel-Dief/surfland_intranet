@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-type modalTypes = null | "login";
+type modalTypes = null | "login" | "options";
 
 interface ModalActive {
     isOpen: modalTypes;

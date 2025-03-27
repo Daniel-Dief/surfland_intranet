@@ -36,7 +36,7 @@ export default function Header() {
                         imgPath={userImg}
                         onClick={
                             loggedUser.userId
-                            ? () => alert("logado")
+                            ? () => open("options")
                             : () => open("login")
                         }
                     />
