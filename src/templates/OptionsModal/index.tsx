@@ -4,6 +4,7 @@ import { useModalActive } from "../../store/modalActive";
 import BigButton from "../../components/BigButton";
 
 import closeImg from "../../assets/close.png";
+import useToken from "../../store/useToken";
 
 export default function OptionsModal() {
     const { close : closeModal} = useModalActive();
@@ -14,10 +15,6 @@ export default function OptionsModal() {
     
     function handleChangePassword() {
         alert("alterar senha")
-    }
-    
-    function handleExit() {
-        alert("sair")
     }
 
     return (
@@ -38,7 +35,7 @@ export default function OptionsModal() {
                     Alterar Senha
                 </BigButton>
                 <BigButton
-                    onClick={handleExit}
+                    onClick={useToken().clearToken}
                 >
                     Sair
                 </BigButton>

@@ -9,6 +9,7 @@ interface State {
         login: string,
         password: string
     ) => void;
+    clearToken: () => void;
 }
 
 const SECRET_KEY = import.meta.env.VITE_TOKEN_KEY || "";
@@ -85,6 +86,12 @@ const useToken = create<State>()(
         const hashPassword = btoa(`${login}:${password}`);
         localStorage.setItem('hashPassword', hashPassword);
         set({ hashPassword });
+      },
+      clearToken: () => {
+        localStorage.clear();
+        sessionStorage.clear();
+        set({ token: null, hashPassword: null });
+        window.location.reload();
       }
     }),
     {
