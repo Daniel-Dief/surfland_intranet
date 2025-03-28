@@ -1,10 +1,10 @@
 import { Container, TitleBox, Title, CloseButton, OptionBox } from "./style";
-import { useModalActive } from "../../store/modalActive";
+import { useModalActive } from "../../../store/modalActive";
 
-import BigButton from "../../components/BigButton";
+import BigButton from "../../../components/BigButton";
 
-import closeImg from "../../assets/close.png";
-import useToken from "../../store/useToken";
+import closeImg from "../../../assets/close.png";
+import useToken from "../../../store/useToken";
 
 export default function OptionsModal() {
     const { close : closeModal} = useModalActive();

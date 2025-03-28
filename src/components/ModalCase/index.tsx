@@ -1,9 +1,9 @@
 import { useModalActive } from "../../store/modalActive";
 
 import { Blur } from "./style";
-import LoginModal from "../../templates/LoginModal";
 import { JSX } from "react";
-import OptionsModal from "../../templates/OptionsModal";
+import LoginModal from "../../templates/Modals/LoginModal";
+import OptionsModal from "../../templates/Modals/OptionsModal";
 
 export default function ModalCase() {
     const { isOpen } = useModalActive();

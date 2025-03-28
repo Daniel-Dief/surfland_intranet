@@ -1,16 +1,16 @@
 import { useRef, FormEvent } from "react";
 
-import InputPassword from "../../components/Inputs/Password"
-import InputText from "../../components/Inputs/Text"
-import InputSubmit from "../../components/Inputs/Submit"
+import InputPassword from "../../../components/Inputs/Password"
+import InputText from "../../../components/Inputs/Text"
+import InputSubmit from "../../../components/Inputs/Submit"
 import { Container, TitleBox, Title, CloseButton, Form } from "./style";
-import { useModalActive } from "../../store/modalActive";
+import { useModalActive } from "../../../store/modalActive";
 import { toast } from "react-toastify";
-import sendLoginRequest from "../../services/auth/logIn.service";
-import useToken from "../../store/useToken";
-import useUser from "../../store/useUser";
+import sendLoginRequest from "../../../services/auth/logIn.service";
+import useToken from "../../../store/useToken";
+import useUser from "../../../store/useUser";
 
-import closeImg from "../../assets/close.png";
+import closeImg from "../../../assets/close.png";
 
 export default function LoginModal() {
     const [ loginRef, passwordRef ] = [ useRef<HTMLInputElement>(null), useRef<HTMLInputElement>(null) ];
