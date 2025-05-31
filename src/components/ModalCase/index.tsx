@@ -4,6 +4,7 @@ import { Blur } from "./style";
 import { JSX } from "react";
 import LoginModal from "../../templates/Modals/LoginModal";
 import OptionsModal from "../../templates/Modals/OptionsModal";
+import ChangePasswordModal from "../../templates/Modals/ChangePasswordModal";
 
 export default function ModalCase() {
     const { isOpen } = useModalActive();
@@ -15,6 +16,9 @@ export default function ModalCase() {
             break;
         case "options":
             modalActive = <OptionsModal />;
+            break;
+        case "changePassword":
+            modalActive = <ChangePasswordModal />;
             break;
         default:
             modalActive = null;

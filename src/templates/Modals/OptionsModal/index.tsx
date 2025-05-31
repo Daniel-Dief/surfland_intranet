@@ -7,14 +7,14 @@ import closeImg from "../../../assets/close.png";
 import useToken from "../../../store/useToken";
 
 export default function OptionsModal() {
-    const { close : closeModal} = useModalActive();
+    const { close : closeModal, open : openModal } = useModalActive();
 
     function handleOptions() {
         alert("opcoes gestor")
     }
     
     function handleChangePassword() {
-        alert("alterar senha")
+        openModal("changePassword");
     }
 
     return (
